@@ -33,9 +33,9 @@
 # - name: Import database files
 #   import_playbook: ../static-assignments/uat-mysqlserver.yml
 
-- name: Import webservers
-  import_playbook: ../static-assignments/uat-webservers.yml
+# - name: Import webservers
+#   import_playbook: ../static-assignments/uat-webservers.yml
 
 - name: Import lb
   import_playbook: ../static-assignments/loadbalancers.yml
-  when: load_balancer_is_required 
+  when: load_balancer_is_required

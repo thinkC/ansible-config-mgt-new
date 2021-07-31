@@ -17,7 +17,7 @@
 - name: copy load_balancer.conf file
   become: true
   ansible.builtin.copy:
-   src: /home/ubuntu/ansible-config-mgt/downloads/load_balancer.conf
+   src: /home/ubuntu/ansible-config-mgt-new/downloads/load_balancer.conf
    dest: /etc/nginx/sites-available/
 
 # - name: copy load_balancer.conf file
@@ -53,19 +53,4 @@
 
 
 
-# enable_nginx_lb: false
-# load_balancer_is_required: false
-
-
-
-
-
-
-
-
-# - name: choose Load Balancer
-#   vars:
-#     enable_apache_lb: false
-#     enable_nginx_lb: false
-#     load_balancer_is_required: false
 

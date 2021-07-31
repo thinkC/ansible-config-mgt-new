@@ -1,22 +1,3 @@
----
-- name: collate variables from env specific file, if it exists
-  hosts: all
-  tasks:
-    - name: looping through list of available files
-      include_vars: "{{ item }}"
-      with_first_found:
-        - files:
-            - dev.yml
-            - stage.yml
-            - prod.yml
-            - uat.yml
-          paths:
-            - "{{ playbook_dir }}/../env-vars"
-      tags:
-        - always
-
-#mam
-
 # ---
 # - name: collate variables from env specific file, if it exists
 #   hosts: all
@@ -26,10 +7,29 @@
 #       with_first_found:
 #         - files:
 #             - dev.yml
-#             - prod.yml
 #             - stage.yml
-#             - default.yml
+#             - prod.yml
+#             - uat.yml
 #           paths:
 #             - "{{ playbook_dir }}/../env-vars"
 #       tags:
 #         - always
+
+#other
+
+---
+- name: collate variables from env specific file, if it exists
+  hosts: all
+  tasks:
+    - name: looping through list of available files
+      include_vars: "{{ item }}"
+      with_first_found:
+        - files:
+            - dev.yml
+            - prod.yml
+            - stage.yml
+            - default.yml
+          paths:
+            - "{{ playbook_dir }}/../env-vars"
+      tags:
+        - always
