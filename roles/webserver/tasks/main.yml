@@ -1,2 +1,80 @@
+# ---
+# - name: install apache
+#   become: true
+#   ansible.builtin.yum:
+#     name: "httpd"
+#     state: present
+
+# - name: install git
+#   become: true
+#   ansible.builtin.yum:
+#     name: "git"
+#     state: present
+
+# - name: clone a repo
+#   become: true
+#   ansible.builtin.git:
+#     repo: https://github.com/thinkC/tooling.git
+#     dest: /var/www/html
+#     force: yes
+
+# - name: copy html content to one level up
+#   become: true
+#   command: cp -r /var/www/html/html/ /var/www/
+
+# - name: Start service httpd, if not started
+#   become: true
+#   ansible.builtin.service:
+#     name: httpd
+#     state: started
+
+# - name: recursively remove /var/www/html/html/ directory
+#   become: true
+#   ansible.builtin.file:
+#     path: /var/www/html/html
+#     state: absent
+
+
 ---
-# tasks file for webserver
+# - name: Install Apache on Web1-UAT and Web2-UAT
+#   become: true
+#   yum:
+#     name: httpd
+#     state: present
+#     update_cache: yes
+#     enabled: yes
+
+- name: install Apache
+  become: true
+  ansible.builtin.yum:
+    name: "httpd"
+    state: present
+
+- name: Install git
+  become: true
+  yum:
+    name: git
+    state: present
+- name: Clone git Repository
+  become: true
+  git:
+    repo: https://github.com/thinkC/tooling.git
+    dest: /var/www/html
+    force: yes
+- name: copy html content to one level up
+  become: true
+  command: cp -r /var/www/html/html/ /var/www/
+
+- name: Start httpd if not started
+  become: true
+  service:
+   name: httpd
+   state: started
+   enabled: yes
+- name: recursively remove /var/www/html/html/ directory
+  become: true
+  file:
+   path: /var/www/html/html
+   state: absent
+   
+

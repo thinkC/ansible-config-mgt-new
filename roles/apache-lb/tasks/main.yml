@@ -1,2 +1,76 @@
----
-# tasks file for apache-lb
+--- 
+- name: Install apache httpd 
+  become: true
+  apt:  name=apache2 update_cache=yes state=latest
+    
+- name: Install libxml2-dev
+  become: true
+  apt:
+    name: libxml2-dev
+    state: present
+
+
+- name: enabled mod_rewrite
+  become: true
+  apache2_module: name=rewrite state=present
+
+
+- name: enabled mod_proxy
+  become: true
+  apache2_module: name=proxy state=present
+  
+- name: enabled mod_proxy_balancer
+  become: true
+  apache2_module: name=proxy_balancer state=present
+
+- name: enabled mod_proxy_http
+  become: true
+  apache2_module: name=proxy_http state=present
+
+- name: enabled mod_headers
+  become: true
+  apache2_module: name=headers state=present
+
+- name: enabled mod_lbmethod_bytraffic
+  become: true
+  apache2_module: name=lbmethod_bytraffic state=present
+
+- name: restart apache2
+  become: true
+  service: name=apache2 state=restarted
+
+- name: Move 000-default.conf to /etc/apache2/sites-available/
+  become: yes
+  ansible.builtin.copy:
+    src: /home/ubuntu/ansible-config-mgt/downloads/000-default.conf
+    dest: /etc/apache2/sites-available/000-default.conf
+    force: yes
+
+# - name: Move 000-default.conf to /etc/apache2/sites-available/
+#   template: 
+#     src: templates/000-default.conf.j2
+#     dest: /etc/apache2/sites-available/000-default.conf
+
+# - name: copy default.conf file
+#   become: true
+#   command: "cp -r  /home/ubuntu/backup/000-default.conf /etc/apache2/sites-available/"
+  
+- name: restart apache2
+  become: true
+  service: name=apache2 state=restarted
+
+- import_tasks: configure-firewall.yml
+
+
+# enable_apache_lb: false
+# load_balancer_is_required: false
+
+
+
+
+# - name: choose Load Balancer
+#   vars:
+#     enable_apache_lb: false
+#     enable_nginx_lb: false
+#     load_balancer_is_required: false
+

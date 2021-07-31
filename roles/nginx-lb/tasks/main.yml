@@ -1,2 +1,71 @@
----
-# tasks file for nginx-lb
+--- 
+- name: Install nginx
+  become: true
+  apt:  name=nginx update_cache=yes state=latest
+    
+- name: restart and enable nginx
+  become: true
+  ansible.builtin.service:
+   name: nginx 
+   state: started 
+   enabled: yes
+
+# - name: restart nginx
+#   become: true
+#   service: name=nginx state=restarted
+
+- name: copy load_balancer.conf file
+  become: true
+  ansible.builtin.copy:
+   src: /home/ubuntu/ansible-config-mgt/downloads/load_balancer.conf
+   dest: /etc/nginx/sites-available/
+
+# - name: copy load_balancer.conf file
+#   become: true
+#   ansible.builtin.copy:
+#    src: /home/ubuntu/ansible-config-mgt/downloads/load_balancer.conf
+#    dest: /etc/nginx/sites-enabled/
+
+# - name: Remove default site
+#   become: true
+#   ansible.builtin.file:
+#    path: /etc/nginx/sites-enabled/default
+#    state: absent
+ 
+
+# - name: linking load_balancer.conf file to sites enabled
+#   become: true
+#   ansible.builtin.file:
+#    src: /etc/nginx/sites-available
+#    #dest: /etc/nginx/sites-available/load_balancer.conf
+#    dest: /etc/nginx/sites-enabled
+#    state: link
+
+
+
+  # command:
+  #   -  "cd /etc/nginx/sites-enabled/"
+  #   -  "ln -s ../sites-available/load_balancer.conf ."
+  
+# - name: restart nginx
+#   become: true
+#   service: name=nginx state=restarted
+
+
+
+# enable_nginx_lb: false
+# load_balancer_is_required: false
+
+
+
+
+
+
+
+
+# - name: choose Load Balancer
+#   vars:
+#     enable_apache_lb: false
+#     enable_nginx_lb: false
+#     load_balancer_is_required: false
+

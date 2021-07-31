@@ -1,2 +1,115 @@
+# ---
+# # tasks file for mysql
+
+# - name: install mysql 
+#   ansible.builtin.apt:
+#     name: mysql-server
+#     state: present
+
+# - name: ensure mysql is started and enabled
+#   ansible.builtin.service:
+#      name: mysql
+#      state: started 
+#      enabled: yes
+
+# - name: create /var/lib/mysql/mysql.sock
+#   ansible.builtin.file:
+#     path: /var/lib/mysql/mysql.sock
+#     state: touch
+
+# - name: create database
+#   community.mysql.mysql_db:
+#     name: homestead
+#     collation: utf8_general_ci
+#     encoding: utf8
+#     state: present
+
+# - name: create user
+#   community.mysql.mysql_user:
+#     name: homestead
+#     host: '0.0.0.0'
+#     password: sePret^i
+#     priv: '*.*:ALL,GRANT'
+#     state: present
+
+
+# - name: update /ect/my.cf for bind-address
+#   ansible.builtin.template:
+#     src: templates/my.cnf.j2
+#     dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+#   notify: Restart mysql
+
+# # - name: clone tooling repository
+# #   ansible.builtin.git:
+# #    repo: https://github.com/Livingstone95/tooling.git
+# #    clone: yes
+# #    dest: /home/ansadmin/tooling
+
+# # - name: import tooling-db.sql
+# #   mysql_db:
+# #     state: import
+# #     name: tooling-db
+# #     target: /home/ansadmin/tooling/tooling-db.sql
+
+# - import_tasks: configure-firewall.yml
+
+
 ---
-# tasks file for mysql
+- name: Install mySQL and other dependencies
+  become: true
+  apt:
+   name: ['mysql-server', 'python3-pip', 
+'libmysqlclient-dev', 'python3-dev', 'python3-mysqldb']
+   state: present
+   update_cache: True
+  
+
+- name: ensure mysql is started and enabled
+  become: true
+  ansible.builtin.service:
+     name: mysql
+     state: started 
+     enabled: yes
+
+- name: create /var/lib/mysql/mysql.sock
+  become: true
+  ansible.builtin.file:
+    path: /var/lib/mysql/mysql.sock
+    state: touch
+
+- name: Create Database
+  become: true
+  mysql_db: 
+   name: tooling
+   state: present
+
+- name: Create Application DB user
+  become: true
+  mysql_user:
+   name: webaccess
+   password: sePret^i
+   host: '172.31.49.60'
+   priv: '*.*:ALL,GRANT'
+   state: present
+
+# - name: update /ect/my.cf for bind-address
+#   become: true
+#   template:
+#     src: templates/my.cnf.j2
+#     dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+#   notify: Restart mysql
+
+- name: update /etc/my.cf for bind-address
+  become: true
+  ansible.builtin.copy:
+   src: /home/ubuntu/ansible-config-mgt/downloads/my.cnf.j2
+   dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+  # notify: Restart mysql
+
+- name: restart mysql
+  become: true
+  ansible.builtin.service:
+     name: mysql
+     state: started 
+
+- import_tasks: configure-firewall.yml

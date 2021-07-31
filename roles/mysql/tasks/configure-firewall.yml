@@ -1,0 +1,44 @@
+- name: install firewalld
+  become: true
+  ansible.builtin.apt:
+     name: firewalld
+     state: latest
+
+- name: ensure httpd firewalld is started
+  become: true
+  ansible.builtin.service:
+     name: firewalld
+     state: started 
+     enabled: yes
+
+- name: permit traffic in public zone for https service
+  become: true
+  #ansible.posix.firewalld:
+  firewalld:
+    zone: public
+    service: https
+    permanent: yes
+    state: enabled   
+
+- name: Allow port 8080
+  become: true
+  #ansible.posix.firewalld:
+  firewalld:
+    state: enabled
+    port: 3306/tcp
+    permanent: yes
+
+- name: permit traffic in public zone for http service
+  become: true
+  #ansible.posix.firewalld:
+  firewalld:
+    zone: public
+    service: http
+    permanent: yes
+    state: enabled   
+  
+- name: ensure httpd firewalld is restarted
+  become: true
+  ansible.builtin.service:
+     name: firewalld
+     state: restarted
