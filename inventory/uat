@@ -1,12 +1,12 @@
 
 
 [uat-webservers]
-172.31.58.177 ansible_ssh_user='ec2-user'
-172.31.54.53 ansible_ssh_user='ec2-user'
+172.31.58.177 ansible_ssh_user='ec2-user' ansible_ssh_private_key_file=/home/ubuntu/downloads/aws-bank-demo.pem
+172.31.54.53 ansible_ssh_user='ec2-user' ansible_ssh_private_key_file=/home/ubuntu/downloads/aws-bank-demo.pem
 
 [uat-mysqlserver]
-172.31.60.32 ansible_ssh_user='ubuntu'
+172.31.60.32 ansible_ssh_user='ubuntu' ansible_ssh_private_key_file=/home/ubuntu/downloads/aws-bank-demo.pem
 
 [lb]
-172.31.52.89 ansible_ssh_user='ubuntu'
+172.31.52.89 ansible_ssh_user='ubuntu' ansible_ssh_private_key_file=/home/ubuntu/downloads/aws-bank-demo.pem
 
