@@ -1,0 +1,20 @@
+pipeline{
+    agent any
+    stages{
+        stage('SCM Checkout'){
+            steps{
+                git 'https://github.com/thinkC/ansible-config-mgt-new'
+            }
+        }
+        stage('Execute Ansible'){
+            steps{
+               ansiblePlaybook become: true, colorized: true, credentialsId: 'privateKEY', disableHostKeyChecking: true, installation: 'ansible', inventory: 'inventory/uat', playbook: 'playbooks/site.yml'
+            }
+        }
+        stage('Cleanup Workspace'){
+            steps{
+                cleanWs()
+            }
+        }
+    }
+}
