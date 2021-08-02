@@ -1,8 +1,8 @@
 ---
-- name: Import common file
-  import_playbook: ../static-assignments/common.yml
-  tags:
-    - always
+# - name: Import common file
+#   import_playbook: ../static-assignments/common.yml
+#   tags:
+#     - always
 - name: Include env-var files
   include: ../dynamic-assignments/env-vars.yml
   tags:
@@ -10,8 +10,8 @@
 - name: Import database files
   import_playbook: ../static-assignments/uat-mysqlserver.yml
 
-- name: Import webservers
-  import_playbook: ../static-assignments/uat-webservers.yml
+# - name: Import webservers
+#   import_playbook: ../static-assignments/uat-webservers.yml
 
 - name: Import lb
   import_playbook: ../static-assignments/loadbalancers.yml
